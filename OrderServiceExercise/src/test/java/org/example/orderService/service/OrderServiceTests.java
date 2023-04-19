@@ -33,7 +33,7 @@ public class OrderServiceTests {
         Order order = orderService.createOrder(items);
 
         // Validate total price and consolidated item list count
-        assertEquals(Double.valueOf(1.7), order.getCost());
+        assertEquals(Double.valueOf(1.1), order.getCost());
         assertEquals(order.getItems().size(), 2);
 
     }

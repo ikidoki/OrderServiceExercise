@@ -22,6 +22,22 @@ public class OrderService {
         return price;
     }
 
+    private Integer calculateEffectiveQuantityAfterOffer(ProductType productType, int quantity) {
+        Integer effectiveQuantity = 0;
+        switch (productType) {
+            // effective quantity when buy 1 get 1 free
+            case APPLE:
+                effectiveQuantity = quantity / 2 + quantity % 2;
+                return effectiveQuantity;
+            // effective quantity when 3 for price of 2
+            case ORANGE:
+                effectiveQuantity = (quantity / 3) * 2 + quantity % 3;
+                return effectiveQuantity;
+            default:
+                throw new IllegalArgumentException("Invalid product Type: " + productType);
+        }
+    }
+
     public Order createOrder(List<OrderItemInput> items){
         List<OrderItemOutput> itemsOutput = new ArrayList<>();
         double totalCost = 0.0;
@@ -33,7 +49,7 @@ public class OrderService {
         }
 
         for (Map.Entry<ProductType, Integer> entry : consolidatedQuantities.entrySet()) {
-            double itemCost = calculateOrderCost(entry.getKey(), entry.getValue());
+            double itemCost = calculateOrderCost(entry.getKey(), calculateEffectiveQuantityAfterOffer(entry.getKey(), entry.getValue()));
             itemsOutput.add(new OrderItemOutput(entry.getKey(), entry.getValue(), itemCost));
             totalCost = totalCost + itemCost;
         }
