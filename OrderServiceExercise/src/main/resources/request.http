@@ -5,10 +5,24 @@ Content-Type: application/json
 [
   {
     "productType": "APPLE",
-    "quantity": 4
+    "quantity": 3
+  },
+  {
+    "productType": "APPLE1",
+    "quantity": 2
   },
   {
     "productType": "ORANGE",
     "quantity": 4
+  },
+  {
+    "productType": "ORANGE",
+    "quantity": 0
   }
 ]
+
+### Get all orders
+GET http://localhost:8080/orders
+
+### Get order by ID
+GET http://localhost:8080/orders/a269dc67-380c-4588-9ae2-0296

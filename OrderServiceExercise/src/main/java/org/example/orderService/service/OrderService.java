@@ -4,6 +4,7 @@ import org.example.orderService.model.Order;
 import org.example.orderService.model.OrderItemInput;
 import org.example.orderService.model.OrderItemOutput;
 import org.example.orderService.model.ProductType;
+import org.example.orderService.storage.OrderStorage;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -11,7 +12,10 @@ import java.util.*;
 @Service
 public class OrderService {
 
-    public OrderService(){
+    private final OrderStorage orderStorage;
+
+    public OrderService(OrderStorage orderStorage){
+        this.orderStorage = orderStorage;
     }
 
     private double calculateOrderCost(ProductType productType, int quantity) {
@@ -55,7 +59,21 @@ public class OrderService {
         }
         final String orderId = UUID.randomUUID().toString();
         final Order order = new Order(orderId, itemsOutput, totalCost);
+        orderStorage.save(order);
 
         return order;
+    }
+    public Order getOrderById(String orderId) {
+        Optional<Order> orderOptional = Optional.ofNullable(orderStorage.getByOrderId(orderId));
+        if (!orderOptional.isPresent()) {
+            throw new IllegalArgumentException("Order not found with ID: " + orderId);
+        }
+
+        return orderOptional.get();
+    }
+
+    public List<Order> getAllOrders() {
+
+        return orderStorage.getAll();
     }
 }
