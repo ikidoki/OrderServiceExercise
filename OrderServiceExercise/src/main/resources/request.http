@@ -1,0 +1,14 @@
+### Create order
+POST http://localhost:8080/orders
+Content-Type: application/json
+
+[
+  {
+    "productType": "APPLE",
+    "quantity": 4
+  },
+  {
+    "productType": "ORANGE",
+    "quantity": 4
+  }
+]
